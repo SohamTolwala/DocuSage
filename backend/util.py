@@ -79,14 +79,17 @@ def answerMe(prompt):
   response = query_engine.query(prompt)
 
   # Return the response text to the front-end
-  # return response.choices[0].text  # Assuming you want to return the first response choice as text
-  return response
-  # while True:
-  #   prompt = input('Please ask: ')
-  #   response = query_engine.query(prompt)
-  #   return response
 
+  #jsonify the responses
+  response_f = response.response
+  response_list = [{
+      "question": prompt,
+      "answer": response_f
+  }]
 
+  response_json = json.dumps(response_list)
+  output_filename= 'response.json'
+  with open(output_filename, 'w') as json_file:
+      json.dump(response_list, json_file)
 
-
-from llama_index.indices import vector_store
+  return response_json
