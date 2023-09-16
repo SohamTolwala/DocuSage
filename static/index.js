@@ -1,125 +1,53 @@
-            $(document).ready(function() {
-            // Handle click on send button
-            $('#sendButton').click(function() {
-                // Get message from input field
-                var message = $('#messageInput').val();
+$(document).ready(function() {
+    // Handle click on send button
+    $('#sendButton').click(function() {
+        // Get message from input field
+        var message = $('#messageInput').val();
 
-                // Clear input field
-                $('#messageInput').val('');
+        // Clear input field
+        $('#messageInput').val('');
 
-                // Add user message to chatbox on the left
-                $('#chatbox').append('<div class="user-message">' + message + '</div>');
+        // Add user message to chatbox on the left
+        $('#chatbox').append('<div class="user-message">' + message + '</div>');
+        console.log('User message: ', message)
 
-                // Simulate AI response with a delay of 1 second
-//                setTimeout(function() {
-//                    // Generate AI response
-////                    var response = 'AI will respond';
+        // Simulate AI response with a delay of 1 second
+        setTimeout(function() {
+            // Make an AJAX request to fetch the response from response.json
+              $.ajax({
+                 type: 'POST',
+                 url: '/ask',
+                 data: {question: message},
+                 success: function(response){
+//                    var aiResponse = response;
+                    response=JSON.parse(response);
+                    var aiResponse = response[0].answer;
+                    console.log(aiResponse);
+
+                    $('#chatbox').append('<div class="ai-message">' + aiResponse + '</div>');
+//                    console.log('Response :', aiResponse)
+                 },
+                 error: function(error){
+                    console.log('Error: ', error);
+                 }
+              });
+//            $.getJSON('static/response.json', function(response) {
+//                // Assuming you want the first response from the JSON file
+//                var aiResponse = response[0].answer;
+//                console.log('AI response: ', aiResponse)
 //
-//                    // Add AI response to chatbox on the right
-////                    $('#chatbox').append('<div class="ai-message">' + response + '</div>');
-//                }, 1000);
-
-
-
-// Inside the setTimeout function
-//setTimeout(function() {
-//    // Make an AJAX request to the Flask server
-//    $.ajax({
-//        type: 'POST',
-//        url: '/ask', // The Flask route you created
-//        data: {}, // You can send any necessary data to the server here
-//        success: function(response) {
-//            // Handle the AI response received from the server
-//            var aiResponse = response;
-//
-//            // Add AI response to chatbox on the right
-//            $('#chatbox').append('<div class="ai-message">' + aiResponse + '</div>');
-//        },
-//        error: function(error) {
-//            // Handle any errors that occur during the AJAX request
-//            console.error('Error:', error);
-//        }
-// });
-//},1000);
-// Inside the setTimeout function
-setTimeout(function() {
-    // Make an AJAX request to the FastAPI route
-    $.ajax({
-        type: 'POST',
-        url: '/ask', // Replace with your FastAPI server address
-        data: {question: message}, // You can send any necessary data to the server here
-        success: function(response) {
-            // Handle the AI response received from the server
-            var aiResponse = response;
-
-            // Add AI response to chatbox on the right
-            $('#chatbox').append('<div class="ai-message">' + aiResponse + '</div>');
-        },
-        error: function(error) {
-            // Handle any errors that occur during the AJAX request
-            console.error('Error:', error);
-        }
- });
-},1000);
-
-
-
-
-            });
-
-            // Handle click on upload button
-            $('#uploadButton').click(function() {
-                // Get file from input field
-                var file = $('#fileInput')[0].files[0];
-
-                // Add file message to chatbox on the left
-                $('#chatbox').
-                // Add file message to chatbox on the left
-                $('#chatbox').append('<div class="user-message">File uploaded: ' + file.name + '</div>');
-            });
-        });
-
-
-
-
-
-
-
-
-//    $(document).ready(function() {
-//        // Handle click on send button
-//        $('#sendButton').click(function() {
-//            // Get message from input field
-//            var message = $('#messageInput').val();
-//
-//            // Clear input field
-//            $('#messageInput').val('');
-//
-//            // Add user message to chatbox on the left
-//            $('#chatbox').append('<div class="user-message">' + message + '</div>');
-//
-//            // Send user message to the server
-//            $.ajax({
-//                type: 'POST',
-//                url: '/ask',
-//                data: { question: message },
-//                success: function(response) {
-//                    // Add AI response to chatbox on the right
-//                    $('#chatbox').append('<div class="ai-message">' + response + '</div>');
-//                },
-//                error: function(xhr, status, error) {
-//                    console.error('Error:', error);
-//                }
+//                // Add AI response to chatterbox on the right
+//                $('#chatbox').append('<div class="ai-message">' + aiResponse + '</div>');
 //            });
-//        });
-//
-//        // Handle click on upload button
-//        $('#uploadButton').click(function() {
-//            // Get file from input field
-//            var file = $('#fileInput')[0].files[0];
-//
-//            // Add file message to chatbox on the left
-//            $('#chatbox').append('<div class="user-message">File uploaded: ' + file.name + '</div>');
-//        });
-//    });
+        }, 1000);
+    });
 
+    // Handle click on upload button
+    $('#uploadButton').click(function() {
+        // Get file from input field
+        var file = $('#fileInput')[0].files[0];
+
+        // Add file message to chatterbox on the left
+        $('#chatbox').append('<div class="user-message">File uploaded: ' + file.name + '</div>');
+    });
+});
