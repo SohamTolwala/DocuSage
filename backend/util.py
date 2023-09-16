@@ -4,6 +4,7 @@ from langchain import OpenAI
 import sys
 import os
 import openai
+import json
 
 
 # os.environ["OPENAI_API_KEY"] = "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"
@@ -71,7 +72,7 @@ from llama_index.response.schema import Response
 from llama_index.indices.loading import load_index_from_storage
 from llama_index.storage.storage_context import StorageContext
 def answerMe(prompt):
-  storage_context = StorageContext.from_defaults(persist_dir='E:\BACKUP\C_drive\QA_bot_proj')
+  storage_context = StorageContext.from_defaults(persist_dir=r'E:\BACKUP\C_drive\PycharmProjects\QA_system_GPT_API')
   index = load_index_from_storage(storage_context)
   query_engine = index.as_query_engine()
 
@@ -87,9 +88,22 @@ def answerMe(prompt):
       "answer": response_f
   }]
 
+  # Determine the path to the static folder
+  static_folder = r'E:\BACKUP\C_drive\PycharmProjects\QA_system_GPT_API\static'
+  # Set the output file path to the static folder
+  output_filename = os.path.join(static_folder, 'response.json')
+
+
   response_json = json.dumps(response_list)
-  output_filename= 'response.json'
+  # output_filename = 'response.json'
   with open(output_filename, 'w') as json_file:
-      json.dump(response_list, json_file)
+    json.dump(response_list, json_file)
 
   return response_json
+
+
+
+
+
+
+
