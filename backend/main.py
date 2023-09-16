@@ -2,6 +2,7 @@ from fastapi import FastAPI, Request, Form
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
 from util import answerMe
+from fastapi.responses import JSONResponse
 
 app = FastAPI()
 
@@ -21,10 +22,15 @@ async def read_root(request: Request):
 
 @app.post("/ask")
 async def ask_question(request: Request, question: str = Form(...)):
+    print(f"Received question: {question}")
     # Call the answerMe function from util.py to get the response
     response = answerMe(question)
+    print(f"Response: {response}")
     # return templates.TemplateResponse("index.html", {"request": request, "response": answer})
-    return templates.TemplateResponse("index.html", {"request": request, "response": response})
+
+    # return JSONResponse(content=response)
+    return response
+    # return templates.TemplateResponse("index.html", {"request": request, "response": response})
 
 
 
