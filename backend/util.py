@@ -7,8 +7,8 @@ import openai
 import json
 
 
-# os.environ["OPENAI_API_KEY"] = "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"
-openai.api_key = "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"
+
+openai.api_key = "YOUR_API_KEY"
 from langchain.schema import document
 import openai
 def createVectorIndex(path):
